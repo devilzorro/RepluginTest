@@ -17,6 +17,7 @@ public class ProcessActivity extends AppCompatActivity {
 
     TextView processText;
     HorizontalProcessBar processBar;
+    private float fileSize;
 
 //    public ProcessActivity(@NonNull Context context) {
 //        super(context);
@@ -38,21 +39,29 @@ public class ProcessActivity extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                int pro = processBar.getProgress() + msg.arg1;
-                processBar.setProgress(pro);
-                processText.setText(Integer.toString(pro));
-                if (pro >= processBar.getMax()) {
-                    finish();
+                float pro = 0;
+                if (fileSize != 0) {
+                   pro = msg.arg1/fileSize;
+                   processBar.setCurrentProgress(pro);
                 }
+                processText.setText(Float.toString(pro));
+
             }
         };
+
+        processBar.setProgressListener(new HorizontalProcessBar.ProgressListener() {
+            @Override
+            public void currentProgressListener(float currentProgress) {
+
+            }
+        });
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Download l = new Download(url);
-                processBar.setMax(l.getFileLength());
-
+                processBar.setProgressWithAnimation(100);
+                processBar.startProgressAnimation();
                 int status = l.down2sd("downtemp/", "nsdTest.apk", l.new downhandler() {
                     @Override
                     public void setSize(int size) {
