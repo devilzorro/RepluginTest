@@ -1,5 +1,6 @@
 package com.example.gaozhelong.replugintest.activity;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +17,7 @@ import com.example.gaozhelong.replugintest.widget.HorizontalProcessBar;
 public class ProcessActivity extends AppCompatActivity {
 
     TextView processText;
-    HorizontalProcessBar processBar;
+    ProgressBar processBar;
     private float fileSize;
 
 //    public ProcessActivity(@NonNull Context context) {
@@ -33,35 +34,45 @@ public class ProcessActivity extends AppCompatActivity {
 
         final String url = getIntent().getExtras().getString("url");
 
-        Toast.makeText(getApplicationContext(),"processActivity:"+url,Toast.LENGTH_LONG).show();
+//        Toast.makeText(getApplicationContext(),"processActivity:"+url,Toast.LENGTH_LONG).show();
 
         final Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                float pro = 0;
-                if (fileSize != 0) {
-                   pro = msg.arg1/fileSize;
-                   processBar.setCurrentProgress(pro);
-                }
-                processText.setText(Float.toString(pro));
+                int pro = processBar.getProgress() + msg.arg1;
+//                Toast.makeText(getApplicationContext(),"file Szie: " + fileSize,Toast.LENGTH_LONG).show();
+//                if (fileSize != 0) {
+//                   pro = (msg.arg1/fileSize)*100;
+//                   processBar.setCurrentProgress(pro);
+                    processBar.setProgress(pro);
+                   processText.setText("download process:" + Float.toString(pro));
+
+                   if (pro >= processBar.getMax()) {
+                       finish();
+                   }
+//                }
+
 
             }
         };
 
-        processBar.setProgressListener(new HorizontalProcessBar.ProgressListener() {
-            @Override
-            public void currentProgressListener(float currentProgress) {
-
-            }
-        });
+//        processBar.setProgressListener(new HorizontalProcessBar.ProgressListener() {
+//            @Override
+//            public void currentProgressListener(float currentProgress) {
+//
+//            }
+//        });
+//
+//        processBar.setProgressWithAnimation(100);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Download l = new Download(url);
-                processBar.setProgressWithAnimation(100);
-                processBar.startProgressAnimation();
+//                fileSize = l.getFileLength();
+                processBar.setMax(l.getFileLength());
+//                processBar.startProgressAnimation();
                 int status = l.down2sd("downtemp/", "nsdTest.apk", l.new downhandler() {
                     @Override
                     public void setSize(int size) {

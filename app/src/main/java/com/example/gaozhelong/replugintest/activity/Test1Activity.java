@@ -58,7 +58,7 @@ public class Test1Activity extends AppCompatActivity {
 //
 //                    }
 //                }).start();
-                Toast.makeText(Test1Activity.this,textUrl.getText().toString(),Toast.LENGTH_LONG);
+//                Toast.makeText(Test1Activity.this,textUrl.getText().toString(),Toast.LENGTH_LONG);
                 if (!"".equals(textUrl.getText().toString())) {
                     Intent intent = new Intent(Test1Activity.this,ProcessActivity.class);
                     intent.putExtra("url",textUrl.getText().toString());
