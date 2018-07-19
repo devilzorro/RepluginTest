@@ -14,7 +14,9 @@ public class DownloadProcessActivity extends AppCompatActivity {
     TextView tv_downloadName;
     ProgressBar progressBar;
 
-    OkHttpClient okHttpClient;
+//    OkHttpClient okHttpClient;
+
+    String fileUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,5 +25,7 @@ public class DownloadProcessActivity extends AppCompatActivity {
 
         tv_downloadName = findViewById(R.id.tv_downloadname);
         progressBar = findViewById(R.id.downlaodprocess);
+
+        fileUrl = getIntent().getExtras().getString("url");
     }
 }
