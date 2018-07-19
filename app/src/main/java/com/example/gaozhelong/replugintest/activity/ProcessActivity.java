@@ -18,6 +18,8 @@ public class ProcessActivity extends AppCompatActivity {
 
     TextView processText;
     ProgressBar processBar;
+    TextView tv_fileSize;
+
     private float fileSize;
 
 //    public ProcessActivity(@NonNull Context context) {
@@ -31,6 +33,7 @@ public class ProcessActivity extends AppCompatActivity {
 
         processText = findViewById(R.id.process_text);
         processBar = findViewById(R.id.process_progress);
+        tv_fileSize = findViewById(R.id.tv_filesize);
 
         final String url = getIntent().getExtras().getString("url");
 
@@ -72,6 +75,7 @@ public class ProcessActivity extends AppCompatActivity {
                 Download l = new Download(url);
 //                fileSize = l.getFileLength();
                 processBar.setMax(l.getFileLength());
+                tv_fileSize.setText("total file size:" + l.getFileLength());
 //                processBar.startProgressAnimation();
                 int status = l.down2sd("downtemp/", "nsdTest.apk", l.new downhandler() {
                     @Override

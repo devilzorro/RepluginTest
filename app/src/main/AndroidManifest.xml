@@ -23,7 +23,10 @@
         <activity android:name=".activity.Test1Activity" />
         <activity
             android:name=".activity.ProcessActivity"
-            android:theme="@style/CustomDialog"/>
+            android:theme="@style/CustomDialog" />
+        <activity
+            android:name=".activity.DownloadProcessActivity"
+            android:theme="@style/CustomDialog" />
     </application>
 
 </manifest>
