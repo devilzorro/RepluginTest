@@ -35,7 +35,7 @@ public class DownloadProcessActivity extends AppCompatActivity {
 
         fileUrl = getIntent().getExtras().getString("url");
         fileName = getFileName(fileUrl);
-//        tv_downloadName.setText(fileName);
+        tv_downloadName.setText("文件下载中....");
         downFile(fileUrl);
     }
 

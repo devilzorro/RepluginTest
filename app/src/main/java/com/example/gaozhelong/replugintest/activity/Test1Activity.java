@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,14 +14,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gaozhelong.replugintest.R;
+import com.example.gaozhelong.replugintest.adapter.DownloadedListAdapter;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Test1Activity extends AppCompatActivity {
 
     Button btnDownload;
     EditText textUrl;
     TextView textStatus;
+    RecyclerView downloadedList;
+    DownloadedListAdapter adapter;
+
     Looper looper = Looper.getMainLooper();
     Handler handler;
+    List<String> fileNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +39,7 @@ public class Test1Activity extends AppCompatActivity {
         btnDownload = findViewById(R.id.btn_download);
         textUrl = findViewById(R.id.edit_url);
         textStatus = findViewById(R.id.text_status);
+        downloadedList = findViewById(R.id.rc_downloaded_list);
 //        handler = new Handler(looper) {
 //            @Override
 //            public void handleMessage(Message msg) {
@@ -68,5 +80,23 @@ public class Test1Activity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void initRcList() {
+        fileNames = new ArrayList<>();
+        downloadedList.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    public List<String> getFileNames(String fileAbsolutePath) {
+        List<String> files = new ArrayList<>();
+        File file = new File(fileAbsolutePath);
+        File[] subFile = file.listFiles();
+        for (int iFileLength=0;iFileLength<subFile.length;iFileLength++) {
+            if (subFile[iFileLength].isDirectory()) {
+                String tmpName = subFile[iFileLength].getName();
+                files.add(tmpName);
+            }
+        }
+        return files;
     }
 }
