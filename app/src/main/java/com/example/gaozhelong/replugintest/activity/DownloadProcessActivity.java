@@ -40,11 +40,12 @@ public class DownloadProcessActivity extends AppCompatActivity {
     }
 
     public void downFile(String url) {
-        DownloadUtil.get().download(url, Environment.getExternalStorageDirectory().getAbsolutePath(), fileName, new DownloadUtil.OnDownloadListener() {
+        DownloadUtil.get().download(url, getApplicationContext().getFilesDir().getAbsolutePath(), fileName, new DownloadUtil.OnDownloadListener() {
 
 
             @Override
             public void onDownloadSucces(File file) {
+                Log.d("DownloadProcessActivity", "onDownloadSucces: downloadedDir : " + getApplicationContext().getFilesDir().getAbsolutePath());
                 finish();
             }
 

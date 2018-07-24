@@ -1,12 +1,15 @@
 package com.example.gaozhelong.replugintest.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,6 +55,7 @@ public class Test1Activity extends AppCompatActivity {
 //            }
 //        };
         initBtn();
+        initRcList();
     }
 
     private void initBtn() {
@@ -84,17 +88,25 @@ public class Test1Activity extends AppCompatActivity {
 
     private void initRcList() {
         fileNames = new ArrayList<>();
+        fileNames = getFileNames(getApplicationContext().getFilesDir().getAbsolutePath());
+//        Log.d("Test1Activity", "initRcList: fileDir : "+getApplicationContext().getFilesDir().getAbsolutePath());
+//        Log.d("Test1Activity", "initRcList: fileList : " + fileNames);
+
         downloadedList.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new DownloadedListAdapter(fileNames);
+        downloadedList.setAdapter(adapter);
     }
 
     public List<String> getFileNames(String fileAbsolutePath) {
         List<String> files = new ArrayList<>();
         File file = new File(fileAbsolutePath);
         File[] subFile = file.listFiles();
-        for (int iFileLength=0;iFileLength<subFile.length;iFileLength++) {
-            if (subFile[iFileLength].isDirectory()) {
-                String tmpName = subFile[iFileLength].getName();
-                files.add(tmpName);
+        if (subFile != null) {
+            for (int iFileLength=0;iFileLength<subFile.length;iFileLength++) {
+                if (!subFile[iFileLength].isDirectory()) {
+                    String tmpName = subFile[iFileLength].getName();
+                    files.add(tmpName);
+                }
             }
         }
         return files;
