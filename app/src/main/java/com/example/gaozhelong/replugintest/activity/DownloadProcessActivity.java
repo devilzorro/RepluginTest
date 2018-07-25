@@ -46,6 +46,7 @@ public class DownloadProcessActivity extends AppCompatActivity {
             @Override
             public void onDownloadSucces(File file) {
                 Log.d("DownloadProcessActivity", "onDownloadSucces: downloadedDir : " + getApplicationContext().getFilesDir().getAbsolutePath());
+                setResult(1);
                 finish();
             }
 

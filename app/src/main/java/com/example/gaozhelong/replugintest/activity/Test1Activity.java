@@ -78,12 +78,27 @@ public class Test1Activity extends AppCompatActivity {
                 if (!"".equals(textUrl.getText().toString())) {
                     Intent intent = new Intent(Test1Activity.this,DownloadProcessActivity.class);
                     intent.putExtra("url",textUrl.getText().toString());
-                    startActivity(intent);
+//                    startActivity(intent);
+                    startActivityForResult(intent,2);
                 } else {
                     Toast.makeText(Test1Activity.this,"请输入下载url地址!",Toast.LENGTH_LONG);
                 }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("Test1Activity", "onActivityResult: requestCode" + requestCode + " | resultCode " + resultCode);
+        if (resultCode == 1) {
+            fileNames.clear();
+//            List<String> tmpNames = new ArrayList<String>();
+//            tmpNames = getFileNames(getApplicationContext().getFilesDir().getAbsolutePath());
+            fileNames.addAll(getFileNames(getApplicationContext().getFilesDir().getAbsolutePath()));
+            Log.d("Test1Activity", "onActivityResult: downloaded list: " + fileNames);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void initRcList() {
@@ -94,6 +109,27 @@ public class Test1Activity extends AppCompatActivity {
 
         downloadedList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new DownloadedListAdapter(fileNames);
+        adapter.setOnitemDoneListener(new DownloadedListAdapter.onItemDoneListener() {
+            @Override
+            public void onItemDone(View v, String val, int position) {
+                if ("delete".equals(val)) {
+                    String filePath = getApplicationContext().getFilesDir().getAbsolutePath() + "/" + fileNames.get(position);
+                    if (deleteDownloadedFile(filePath)) {
+                        fileNames.clear();
+//                        fileNames = getFileNames(getApplicationContext().getFilesDir().getAbsolutePath());
+                        fileNames.addAll(getFileNames(getApplicationContext().getFilesDir().getAbsolutePath()));
+                        Log.d("Test1Activity", "onItemDone: after delete fileNames list: " + fileNames);
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(getApplicationContext(),"删除失败！",Toast.LENGTH_LONG).show();
+                    }
+                } else if ("install".equals(val)) {
+                    Toast.makeText(getApplicationContext(),"prepare install!",Toast.LENGTH_LONG).show();
+                } else {
+
+                }
+            }
+        });
         downloadedList.setAdapter(adapter);
     }
 
@@ -110,5 +146,22 @@ public class Test1Activity extends AppCompatActivity {
             }
         }
         return files;
+    }
+
+//    private void refreshRcData() {
+//        fileNames = getFileNames(getApplicationContext().getFilesDir().getAbsolutePath());
+//    }
+
+    boolean deleteDownloadedFile(String fileName) {
+        File file = new File(fileName);
+        if (file.exists() && file.isFile()) {
+            if (file.delete()) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }
