@@ -7,18 +7,46 @@
     android:orientation="vertical"
     tools:context=".activity.MainActivity">
 
-    <ScrollView
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/rc_mainlist"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
+
+        <!--</android.support.v7.widget.RecyclerView>-->
+
+    <!--</ScrollView>-->
+
+    <Button
+        android:id="@+id/nsd_btn"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:text="nsd_replugin"
+        android:textSize="20dp"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rc_mainlist"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <Button
+        android:id="@+id/app_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="nsd app start up"
+        android:textSize="20dp"/>
 
-        </android.support.v7.widget.RecyclerView>
+    <Button
+        android:id="@+id/app_uninstall_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="app uninstall"
+        android:textSize="20dp" />
 
-    </ScrollView>
+    <Button
+        android:id="@+id/add_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="添加插件"
+        android:textSize="20dp"/>
 
     <!--<GridLayout-->
         <!--android:id="@+id/grid"-->
